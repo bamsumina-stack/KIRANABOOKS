@@ -1,107 +1,64 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 
 function Cart() {
+  const navigate = useNavigate();
 
   const [cart, setCart] = useState(
     JSON.parse(localStorage.getItem("cart")) || []
   );
 
   const removeItem = (id) => {
-
-    const updatedCart =
-      cart.filter((book) => book.id !== id);
-
+    const updatedCart = cart.filter((book) => book.id !== id);
     setCart(updatedCart);
-
-    localStorage.setItem(
-      "cart",
-      JSON.stringify(updatedCart)
-    );
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const total = cart.reduce(
-    (sum, book) => sum + book.price,
-    0
-  );
+  const total = cart.reduce((sum, book) => sum + book.price, 0);
+
+  const handleCheckout = () => {
+    navigate("/checkout");
+  };
 
   return (
     <>
       <Navbar />
-
       <div className="page-container">
-
         <h1>Your Cart </h1>
 
         {cart.length === 0 ? (
-
           <div className="empty-box">
-
             <h2>Your cart is empty</h2>
-
-            <Link to="/books">
-              Browse Books
-            </Link>
-
+            <Link to="/books">Browse Books</Link>
           </div>
-
         ) : (
-
           <>
-
             <div className="cart-list">
-
               {cart.map((book) => (
-
-                <div
-                  className="cart-item"
-                  key={book.id}
-                >
-
-                  <img
-                    src={book.image}
-                    alt={book.title}
-                  />
-
+                <div className="cart-item" key={book.id}>
+                  <img src={book.image} alt={book.title} />
                   <div>
                     <h3>{book.title}</h3>
                     <p>{book.author}</p>
-                    <strong>
-                      Rs. {book.price}
-                    </strong>
+                    <strong>Rs. {book.price}</strong>
                   </div>
-
-                  <button
-                    onClick={() =>
-                      removeItem(book.id)
-                    }
-                  >
+                  <button onClick={() => removeItem(book.id)}>
                     Remove
                   </button>
-
                 </div>
-
               ))}
-
             </div>
 
             <div className="cart-total">
-
-              <h2>
-                Total: Rs. {total}
-              </h2>
-
-              <button>
+              <h2>Total: Rs. {total}</h2>
+              <button onClick={handleCheckout}>
                 Proceed to Checkout
               </button>
-
             </div>
-
           </>
-
         )}
-
       </div>
     </>
   );

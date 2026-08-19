@@ -1,0 +1,107 @@
+/* SellBook.css */
+
+.sell-book-page {
+  max-width: 600px;
+  margin: 60px auto;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.sell-book-page h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #1a1a1a;
+}
+
+.sell-book-page > p {
+  color: #666;
+  margin-bottom: 28px;
+  font-size: 15px;
+}
+
+.sell-book-page form {
+  display: flex;
+  flex-direction: column;
+}
+
+.sell-book-page label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-top: 16px;
+  margin-bottom: 6px;
+}
+
+.sell-book-page input[type="text"],
+.sell-book-page input[type="number"],
+.sell-book-page select {
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.sell-book-page input[type="text"]:focus,
+.sell-book-page input[type="number"]:focus,
+.sell-book-page select:focus {
+  border-color: #6c4fd6;
+}
+
+.sell-book-page input[type="file"] {
+  padding: 10px 0;
+  font-size: 14px;
+}
+
+.sell-book-page img {
+  border-radius: 8px;
+  border: 1px solid #eee;
+  object-fit: cover;
+}
+
+.sell-book-page .error-message {
+  color: #d93025;
+  background: #fdecea;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: 16px;
+}
+
+.sell-book-page .success-message {
+  color: #1e7e34;
+  background: #e6f4ea;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: 16px;
+}
+
+.sell-book-page button[type="submit"] {
+  margin-top: 24px;
+  padding: 14px;
+  background: #6c4fd6;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sell-book-page button[type="submit"]:hover {
+  background: #5a3fc0;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .sell-book-page {
+    margin: 20px;
+    padding: 24px;
+  }
+}

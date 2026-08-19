@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Checkout.css";
 
 function Checkout() {
   const navigate = useNavigate();
+
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCart(storedCart);
+  }, []);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -23,16 +30,14 @@ function Checkout() {
     });
   };
 
+  const bookTotal = cart.reduce((sum, book) => sum + book.price, 0);
+  const deliveryFee = cart.length > 0 ? 100 : 0;
+  const grandTotal = bookTotal + deliveryFee;
+
   const handleOrder = (e) => {
     e.preventDefault();
 
-    const {
-      name,
-      email,
-      phone,
-      address,
-      city,
-    } = formData;
+    const { name, email, phone, address, city } = formData;
 
     if (!name || !email || !phone || !address || !city) {
       setError("Please fill in all required fields.");
@@ -41,59 +46,40 @@ function Checkout() {
 
     setError("");
 
-    // Save order information locally
+    // Save order info + cart snapshot + total
     localStorage.setItem(
       "kiranabooksOrder",
-      JSON.stringify(formData)
+      JSON.stringify({ ...formData, items: cart, total: grandTotal })
     );
 
-    alert("Order placed successfully!");
+    // Clear the cart after placing the order
+    localStorage.removeItem("cart");
 
+    alert("Order placed successfully!");
     navigate("/home");
   };
 
   return (
     <div className="checkout-page">
-
-      {/* HEADER */}
-
       <header className="checkout-header">
-        <button
-          className="back-button"
-          onClick={() => navigate("/cart")}
-        >
+        <button className="back-button" onClick={() => navigate("/cart")}>
           ← Back to Cart
         </button>
-
         <h1>KIRANABOOKS</h1>
-
-        <div className="secure-text">
-          🔒 Secure Checkout
-        </div>
+        <div className="secure-text">🔒 Secure Checkout</div>
       </header>
 
-      {/* MAIN */}
-
       <main className="checkout-container">
-
         <div className="checkout-left">
-
           <h2>Checkout</h2>
-
           <p className="checkout-subtitle">
             Enter your details to complete your order.
           </p>
 
           <form onSubmit={handleOrder}>
-
-            {/* CONTACT */}
-
             <section className="checkout-section">
-
               <h3>Contact Information</h3>
-
               <label>Full Name *</label>
-
               <input
                 type="text"
                 name="name"
@@ -101,9 +87,7 @@ function Checkout() {
                 value={formData.name}
                 onChange={handleChange}
               />
-
               <label>Email Address *</label>
-
               <input
                 type="email"
                 name="email"
@@ -111,9 +95,7 @@ function Checkout() {
                 value={formData.email}
                 onChange={handleChange}
               />
-
               <label>Phone Number *</label>
-
               <input
                 type="tel"
                 name="phone"
@@ -121,170 +103,105 @@ function Checkout() {
                 value={formData.phone}
                 onChange={handleChange}
               />
-
             </section>
 
-            {/* ADDRESS */}
-
             <section className="checkout-section">
-
               <h3>Delivery Address</h3>
-
               <label>Address *</label>
-
               <textarea
                 name="address"
                 placeholder="Enter your delivery address"
                 value={formData.address}
                 onChange={handleChange}
               />
-
               <label>City *</label>
-
-              <select
-                name="city"
-                value={formData.city}
-                onChange={handleChange}
-              >
-                <option value="">
-                  Select your city
-                </option>
-
-                <option value="Kathmandu">
-                  Kathmandu
-                </option>
-
-                <option value="Lalitpur">
-                  Lalitpur
-                </option>
-
-                <option value="Bhaktapur">
-                  Bhaktapur
-                </option>
-
-                <option value="Pokhara">
-                  Pokhara
-                </option>
-
-                <option value="Biratnagar">
-                  Biratnagar
-                </option>
-
-                <option value="Other">
-                  Other
-                </option>
+              <select name="city" value={formData.city} onChange={handleChange}>
+                <option value="">Select your city</option>
+                <option value="Kathmandu">Kathmandu</option>
+                <option value="Lalitpur">Lalitpur</option>
+                <option value="Bhaktapur">Bhaktapur</option>
+                <option value="Pokhara">Pokhara</option>
+                <option value="Biratnagar">Biratnagar</option>
+                <option value="Other">Other</option>
               </select>
-
             </section>
 
-            {/* PAYMENT */}
-
             <section className="checkout-section">
-
               <h3>Payment Method</h3>
-
               <label className="payment-option">
-
                 <input
                   type="radio"
                   name="payment"
                   value="Cash on Delivery"
-                  checked={
-                    formData.payment === "Cash on Delivery"
-                  }
+                  checked={formData.payment === "Cash on Delivery"}
                   onChange={handleChange}
                 />
-
                 <span>
                   <strong>Cash on Delivery</strong>
-                  <small>
-                    Pay when your book arrives.
-                  </small>
+                  <small>Pay when your book arrives.</small>
                 </span>
-
               </label>
 
               <label className="payment-option">
-
                 <input
                   type="radio"
                   name="payment"
                   value="Online Payment"
-                  checked={
-                    formData.payment === "Online Payment"
-                  }
+                  checked={formData.payment === "Online Payment"}
                   onChange={handleChange}
                 />
-
                 <span>
                   <strong>Online Payment</strong>
-                  <small>
-                    Payment gateway can be connected later.
-                  </small>
+                  <small>Payment gateway can be connected later.</small>
                 </span>
-
               </label>
-
             </section>
 
-            {error && (
-              <p className="checkout-error">
-                {error}
-              </p>
-            )}
+            {error && <p className="checkout-error">{error}</p>}
 
-            <button
-              type="submit"
-              className="place-order-button"
-            >
+            <button type="submit" className="place-order-button">
               Place Order
             </button>
-
           </form>
-
         </div>
 
-        {/* ORDER SUMMARY */}
-
+        {/* ORDER SUMMARY — now driven by real cart data */}
         <aside className="order-summary">
-
           <h2>Order Summary</h2>
 
-          <div className="summary-book">
-
-            <div className="book-placeholder">
-              📚
+          {cart.map((book) => (
+            <div className="summary-book" key={book.id}>
+              <img
+                src={book.image}
+                alt={book.title}
+                style={{ width: "70px", height: "90px", objectFit: "cover", borderRadius: "8px" }}
+              />
+              <div>
+                <h3>{book.title}</h3>
+                <p>{book.author}</p>
+                <p>Rs. {book.price}</p>
+              </div>
             </div>
-
-            <div>
-              <h3>Selected Book</h3>
-              <p>Second-hand book</p>
-              <p>Quantity: 1</p>
-            </div>
-
-          </div>
+          ))}
 
           <div className="summary-line">
-            <span>Book Price</span>
-            <span>Rs. 500</span>
+            <span>Book Total</span>
+            <span>Rs. {bookTotal}</span>
           </div>
 
           <div className="summary-line">
             <span>Delivery</span>
-            <span>Rs. 100</span>
+            <span>Rs. {deliveryFee}</span>
           </div>
 
           <hr />
 
           <div className="summary-total">
             <span>Total</span>
-            <strong>Rs. 600</strong>
+            <strong>Rs. {grandTotal}</strong>
           </div>
-
         </aside>
-
       </main>
-
     </div>
   );
 }
