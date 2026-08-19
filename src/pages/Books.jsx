@@ -1,12 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import BookCard from "../components/BookCard";
-import books from "../data/books";
+import { books as staticBooks } from "../data/books";
 
 function Books() {
 
+  const [allBooks, setAllBooks] = useState(staticBooks);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
+
+  useEffect(() => {
+    const userListings = JSON.parse(
+      localStorage.getItem("kiranabooks_userlistings") || "[]"
+    );
+    setAllBooks([...staticBooks, ...userListings]);
+  }, []);
 
   const categories = [
     "All",
@@ -16,7 +24,7 @@ function Books() {
     "Finance"
   ];
 
-  const filteredBooks = books.filter((book) => {
+  const filteredBooks = allBooks.filter((book) => {
 
     const matchesSearch =
       book.title

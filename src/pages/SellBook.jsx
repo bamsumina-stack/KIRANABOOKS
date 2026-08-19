@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 function SellBook() {
   const navigate = useNavigate();
+  const { id } = useParams(); // present only when editing
+  const isEditMode = Boolean(id);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -16,11 +18,38 @@ function SellBook() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
+  // If editing, preload the existing book's data
+  useEffect(() => {
+    if (isEditMode) {
+      const existingBooks = JSON.parse(
+        localStorage.getItem("kiranabooks_userlistings") || "[]"
+      );
+      const bookToEdit = existingBooks.find(
+        (book) => String(book.id) === id
+      );
+      if (bookToEdit) {
+        setFormData(bookToEdit);
+      }
+    }
+  }, [id, isEditMode]);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  // Convert uploaded image file to base64 string
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData((prev) => ({ ...prev, image: reader.result }));
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSubmit = (e) => {
@@ -32,22 +61,41 @@ function SellBook() {
       return;
     }
 
-    // Get existing user-listed books (or empty array if none yet)
     const existingBooks = JSON.parse(
       localStorage.getItem("kiranabooks_userlistings") || "[]"
     );
 
-    const newBook = {
-      id: Date.now(), // simple unique id for now
-      title: formData.title,
-      author: formData.author,
-      price: Number(formData.price),
-      category: formData.category || "Uncategorized",
-      condition: formData.condition,
-      image: formData.image || "/placeholder-cover.jpg",
-    };
+    let updatedBooks;
 
-    const updatedBooks = [...existingBooks, newBook];
+    if (isEditMode) {
+      // Update the matching book in place
+      updatedBooks = existingBooks.map((book) =>
+        String(book.id) === id
+          ? {
+              ...book,
+              title: formData.title,
+              author: formData.author,
+              price: Number(formData.price),
+              category: formData.category || "Uncategorized",
+              condition: formData.condition,
+              image: formData.image || "/placeholder-cover.jpg",
+            }
+          : book
+      );
+    } else {
+      // Add new listing
+      const newBook = {
+        id: Date.now(),
+        title: formData.title,
+        author: formData.author,
+        price: Number(formData.price),
+        category: formData.category || "Uncategorized",
+        condition: formData.condition,
+        image: formData.image || "/placeholder-cover.jpg",
+      };
+      updatedBooks = [...existingBooks, newBook];
+    }
+
     localStorage.setItem(
       "kiranabooks_userlistings",
       JSON.stringify(updatedBooks)
@@ -55,24 +103,28 @@ function SellBook() {
 
     setSuccess(true);
 
-    // Reset form
-    setFormData({
-      title: "",
-      author: "",
-      price: "",
-      category: "",
-      condition: "Good",
-      image: "",
-    });
+    if (!isEditMode) {
+      setFormData({
+        title: "",
+        author: "",
+        price: "",
+        category: "",
+        condition: "Good",
+        image: "",
+      });
+    }
 
-    // Redirect to books page after a short delay
-    setTimeout(() => navigate("/books"), 1000);
+    setTimeout(() => navigate("/my-listings"), 1000);
   };
 
   return (
     <div className="sell-book-page">
-      <h1>Sell a Book</h1>
-      <p>Fill in the details below to list your book.</p>
+      <h1>{isEditMode ? "Edit Book Listing" : "Sell a Book"}</h1>
+      <p>
+        {isEditMode
+          ? "Update the details below."
+          : "Fill in the details below to list your book."}
+      </p>
 
       <form onSubmit={handleSubmit}>
         <label>Book Title</label>
@@ -123,19 +175,27 @@ function SellBook() {
           <option value="Worn">Worn</option>
         </select>
 
-        <label>Cover Image URL</label>
-        <input
-          type="text"
-          name="image"
-          value={formData.image}
-          onChange={handleChange}
-          placeholder="https://covers.openlibrary.org/b/isbn/..."
-        />
+        <label>Cover Image</label>
+        <input type="file" accept="image/*" onChange={handleImageUpload} />
+        {formData.image && (
+          <img
+            src={formData.image}
+            alt="Preview"
+            style={{ width: "100px", marginTop: "8px", display: "block" }}
+          />
+        )}
 
         {error && <p className="error-message">{error}</p>}
-        {success && <p className="success-message">Book listed successfully! Redirecting...</p>}
+        {success && (
+          <p className="success-message">
+            {isEditMode ? "Book updated successfully!" : "Book listed successfully!"}{" "}
+            Redirecting...
+          </p>
+        )}
 
-        <button type="submit">List Book</button>
+        <button type="submit">
+          {isEditMode ? "Update Book" : "List Book"}
+        </button>
       </form>
     </div>
   );

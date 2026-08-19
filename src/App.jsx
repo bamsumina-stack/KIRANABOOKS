@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Wishlist from "./pages/Wishlist";
 import SellBook from "./pages/SellBook"; 
+import MyListings from "./pages/MyListings";
 
 import "./App.css";
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/sell" element={<SellBook />} />
+        <Route path="/my-listings" element={<MyListings />} />
 
         {/* MAIN WEBSITE */}
         <Route path="/" element={<Home />} />
