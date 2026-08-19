@@ -1,0 +1,6 @@
+1. Open Library API (openlibrary.org/developers/api)
+
+Completely free, no API key required, no rate limits for reasonable use
+Covers endpoint gives you cover images directly: https://covers.openlibrary.org/b/isbn/{ISBN}-L.jpg (also works with OLID or cover ID, sizes S/M/L)
+Book details via https://openlibrary.org/b/id/{ISBN}.json or search API https://openlibrary.org/search.json?q={title}
+Great for open-ended, high-volume use since there's no key/quota hassle
