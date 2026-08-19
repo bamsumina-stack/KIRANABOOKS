@@ -21,6 +21,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/sell" element={<SellBook />} />
+        <Route path="/edit-listing/:id" element={<SellBook />} />
         <Route path="/my-listings" element={<MyListings />} />
 
         {/* MAIN WEBSITE */}
