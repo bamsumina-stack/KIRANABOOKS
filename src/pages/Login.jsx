@@ -18,6 +18,9 @@ function Login() {
       setError("Please enter your email and password.");
       return;
     }
+    localStorage.setItem("kiranabooks_email", email);
+     localStorage.setItem("kiranabooks_loggedin", "true"); 
+navigate("/home");
 
     // Login successful
      localStorage.setItem("kiranabooks_loggedin", "true"); 

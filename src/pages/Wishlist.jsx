@@ -47,7 +47,38 @@ function Wishlist() {
           </div>
 
         )}
+        <section className="features">
 
+          <div>
+            <span></span>
+            <h3>Affordable Books</h3>
+            <p>
+              Find quality second-hand books
+              at student-friendly prices.
+            </p>
+          </div>
+
+          <div>
+            <span></span>
+            <h3>Give Books a Second Life</h3>
+            <p>
+              Sell books you no longer need
+              and earn from them.
+            </p>
+          </div>
+
+          <div>
+            <span>🇳🇵</span>
+            <h3>Nepali Books</h3>
+            <p>
+              Discover books from Nepali
+              authors and writers.
+            </p>
+          </div>
+
+        </section>
+
+      
       </div>
     </>
   );

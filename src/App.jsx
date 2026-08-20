@@ -10,6 +10,7 @@ import Signup from "./pages/Signup";
 import Wishlist from "./pages/Wishlist";
 import SellBook from "./pages/SellBook"; 
 import MyListings from "./pages/MyListings";
+import Profile from "./pages/Profile";
 
 import "./App.css";
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/sell" element={<SellBook />} />
         <Route path="/edit-listing/:id" element={<SellBook />} />
         <Route path="/my-listings" element={<MyListings />} />
+        <Route path="/profile" element={<Profile />} />
 
         {/* MAIN WEBSITE */}
         <Route path="/" element={<Home />} />

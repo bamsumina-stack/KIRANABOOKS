@@ -1,0 +1,123 @@
+.profile-page {
+  max-width: 550px;
+  margin: 60px auto;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.profile-page h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+  color: #1a1a1a;
+}
+
+.profile-page > p {
+  color: #666;
+  margin-bottom: 28px;
+}
+
+.profile-page form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.profile-image-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.profile-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 2px solid #eee;
+  margin-bottom: 12px;
+  background: #f2f2f2;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  font-size: 44px;
+  color: #999;
+}
+
+.upload-label {
+  color: #6c4fd6;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.profile-page label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-top: 16px;
+  margin-bottom: 6px;
+}
+
+.profile-page input,
+.profile-page textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+}
+
+.profile-page textarea {
+  height: 90px;
+  resize: vertical;
+}
+
+.profile-page input:focus,
+.profile-page textarea:focus {
+  border-color: #6c4fd6;
+}
+
+.profile-page .success-message {
+  color: #1e7e34;
+  background: #e6f4ea;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: 16px;
+}
+
+.profile-page button[type="submit"] {
+  margin-top: 24px;
+  padding: 14px;
+  background: #6c4fd6;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.profile-page button[type="submit"]:hover {
+  background: #5a3fc0;
+}

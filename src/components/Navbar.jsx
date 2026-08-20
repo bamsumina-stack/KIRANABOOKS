@@ -33,20 +33,22 @@ function Navbar() {
         </Link>
 
         <Link to="/wishlist">
-          ❤️ Wishlist
+           Wishlist
         </Link>
 
         <Link to="/cart">
-          🛒 Cart
+           Cart
         </Link>
 
         <button onClick={logout}>
           Logout
         </button>
+        <Link to="/profile">👤 Profile</Link>
 
       </div>
 
     </nav>
+
   );
 }
 
