@@ -213,7 +213,7 @@ function Home() {
 
           <div className="book-grid">
             {filteredBooks
-              .slice(0, 4)
+              .slice(0, 100)
               .map((book) => (
                 <BookCard
                   key={book.id}
